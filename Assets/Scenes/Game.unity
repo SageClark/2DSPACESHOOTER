@@ -397,6 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lives: 3
   _score: 0
+  _numOfShields: 0
   _speed: 5
   _shiftSpeed: 5.5
   horizontalInput: 0
@@ -408,6 +409,7 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 6941150022266751212, guid: 3d19bfc951a2cac449cc66c5c33e1f7b, type: 3}
   _tripleShotPrefab: {fileID: 7052994995370227487, guid: 9abebe92da770ef4ca9afa5365eab551, type: 3}
   _shieldVisualizer: {fileID: 1084814274}
+  _shieldsImg: {fileID: 2124623535}
   _leftEngineDamaged: {fileID: 1979075901}
   _rightEngineDamaged: {fileID: 1397618075}
   _playerController: {fileID: 0}
@@ -932,11 +934,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 2001685073}
   _LivesImg: {fileID: 478616171}
+  _shieldsImg: {fileID: 2124623537}
   _liveSprites:
   - {fileID: 21300000, guid: ba53e111f0125654cabfd4eefaf3a657, type: 3}
   - {fileID: 21300000, guid: 80fba5ece7697c44eacc036539c1b552, type: 3}
   - {fileID: 21300000, guid: 482c8e4c0346b704aa5f1760c3c989d5, type: 3}
   - {fileID: 21300000, guid: 9fe6f40efddf0b64fb68a3382b14a4db, type: 3}
+  _shieldSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: b8417aaed04592845bebd2240f41af94, type: 3}
+  - {fileID: 21300000, guid: 3e704de523a628b4aa740aeb37c8563e, type: 3}
+  - {fileID: 21300000, guid: c6f41936f1ce6f949a1089e4bebf601c, type: 3}
   _gameOverText: {fileID: 15731677}
   _restartText: {fileID: 1040385390}
   _gameManager: {fileID: 329825064}
@@ -1018,6 +1026,7 @@ RectTransform:
   - {fileID: 478616173}
   - {fileID: 1215414257}
   - {fileID: 2001685075}
+  - {fileID: 2124623536}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2173,6 +2182,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2124623535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2124623536}
+  - component: {fileID: 2124623538}
+  - component: {fileID: 2124623537}
+  m_Layer: 5
+  m_Name: Shields_img
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2124623536
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124623535}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7875, y: 0.34996, z: 1}
+  m_Children: []
+  m_Father: {fileID: 690234203}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -50, y: -66}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2124623537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124623535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: c6f41936f1ce6f949a1089e4bebf601c, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2124623538
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124623535}
+  m_CullTransparentMesh: 1
 --- !u!1001 &4543113034972881274
 PrefabInstance:
   m_ObjectHideFlags: 0

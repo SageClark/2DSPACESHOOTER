@@ -11,9 +11,15 @@ public class UIManager : MonoBehaviour
     
     [SerializeField]
     private Image _LivesImg;
+
+    [SerializeField]
+    private Image _shieldsImg;
     
     [SerializeField]
     private Sprite[] _liveSprites;
+
+    [SerializeField]
+    private Sprite[] _shieldSprites;
    
     [SerializeField]
     private Text _gameOverText;
@@ -53,6 +59,11 @@ public class UIManager : MonoBehaviour
         {
             GameOverSequence();
         }
+    }
+
+    public void UpdateShield(int currentShields)
+    {
+        _shieldsImg.sprite = _shieldSprites[currentShields];
     }
 
     void GameOverSequence()

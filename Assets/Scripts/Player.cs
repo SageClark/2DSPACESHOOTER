@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     public int _score;
+    [SerializeField]
+    private int _numOfShields = 0;
 
     [SerializeField]
     private float _speed = 0.5f;
@@ -23,7 +25,7 @@ public class Player : MonoBehaviour
     public bool _isTripleShotActive = false;
     public bool _isSpeedActive = false;
     public bool _isShieldActive = false;
-
+    
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour
     private GameObject _tripleShotPrefab;
     [SerializeField]
     private GameObject _shieldVisualizer;
+    [SerializeField]
+    private GameObject _shieldsImg;
     [SerializeField]
     private GameObject _leftEngineDamaged;
     [SerializeField]
@@ -102,12 +106,14 @@ public class Player : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
+        // add speed boost when left shift key is held
         if (Input.GetKey(KeyCode.LeftShift))
         {
             transform.Translate(direction * _shiftSpeed * Time.deltaTime);
         }
 
         transform.Translate(direction * _speed * Time.deltaTime);
+        
         // clamp y pos between -3.8f and 0, wrap x pos from one side of screen to other side:
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0), 0);
         if (transform.position.x >= 11.3f)
@@ -143,11 +149,16 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive == true)
+        if (_numOfShields > 0)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;           
+            _numOfShields--;
+            _uiManager.UpdateShield(_numOfShields);
+            if (_numOfShields < 1)
+            {
+                _shieldsImg.SetActive(false);
+                _shieldVisualizer.SetActive(false);
+            }
+                     
         }
         else
         {
@@ -214,8 +225,9 @@ public class Player : MonoBehaviour
         _isShieldActive = true;
         
         _shieldVisualizer.SetActive(true);
-       // StartCoroutine(ShieldPowerDownRoutine());
-
+        _numOfShields = 3;
+        _shieldsImg.SetActive(true);
+        _uiManager.UpdateShield(3);
     }
 
     IEnumerator ShieldPowerDownRoutine()
@@ -223,7 +235,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         _isShieldActive = false;
         _shieldVisualizer.SetActive(false);
-
+        _shieldsImg.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

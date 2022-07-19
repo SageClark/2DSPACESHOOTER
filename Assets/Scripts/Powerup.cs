@@ -14,10 +14,10 @@ public class Powerup : MonoBehaviour
     private int powerupID;
     [SerializeField]
     private AudioClip _clip;
+    private UIManager _uiManager;
 
-    // Start is called before the first frame update
 
-    // Update is called once per frame
+    // Update is called once per frame    
     void Update()
     {
 
