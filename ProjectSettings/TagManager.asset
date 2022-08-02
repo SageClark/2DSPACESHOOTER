@@ -9,6 +9,8 @@ TagManager:
   - TripleShot
   - gameManager
   - EnemyLaser
+  - Missile
+  - Energy
   layers:
   - Default
   - TransparentFX

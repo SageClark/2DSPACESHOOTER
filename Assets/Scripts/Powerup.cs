@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 5.0f;
-    //ID for Powerups
-    //0 = Triple shot
-    //1 = speed
-    //2 = shields
     [SerializeField]
     private int powerupID;
     [SerializeField]
     private AudioClip _clip;
-    private UIManager _uiManager;
+    private UIManager uiManager;
 
+    private void Start()
+    {
+        uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+    }
 
     // Update is called once per frame    
     void Update()
@@ -35,13 +36,11 @@ public class Powerup : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Player player = other.transform.GetComponent<Player>();
-
+            Player player = other.transform.GetComponent<Player>();           
             AudioSource.PlayClipAtPoint(_clip, transform.position);
 
             if (player != null)
             {
-                //if powerUP is 0
                 switch(powerupID)
                 {
                     case 0:
@@ -53,8 +52,21 @@ public class Powerup : MonoBehaviour
                     case 2:
                         player.ShieldActive();
                         break;
+                    case 3:
+                        uiManager.AddAmmo();
+                        break;
+                    case 4:
+                        player.AddHealth();
+                        break;
+                    case 5:
+                        player.specialCount++;
+                        uiManager.updateSpecialCount(player.specialCount);
+                        break;
                 }
-
+            }
+            else
+            {
+                Debug.Log("UIManager is null");
             }
             Destroy(this.gameObject);
         }

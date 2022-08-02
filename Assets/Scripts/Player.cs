@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _numOfShields = 0;
 
+    public int specialCount;
+
+
     [SerializeField]
     private float _speed = 0.5f;
     [SerializeField]
@@ -25,7 +28,7 @@ public class Player : MonoBehaviour
     public bool _isTripleShotActive = false;
     public bool _isSpeedActive = false;
     public bool _isShieldActive = false;
-    
+
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -42,15 +45,20 @@ public class Player : MonoBehaviour
     private GameObject _rightEngineDamaged;
     [SerializeField]
     private GameObject _playerController;
+    [SerializeField]
+    private GameObject _energyBallPrefab;
 
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     [SerializeField]
     public Joystick joystick;
-    
+
     [SerializeField]
     private AudioClip _laserSoundClip;
-    private AudioSource _audioSource;
+    [SerializeField]
+    public AudioClip _laserEmptyClip;
+    [SerializeField]
+    public AudioSource _audioSource;
 
 
 
@@ -85,7 +93,26 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    public void AddHealth()
+    {
+        //if player is not over the 3 lives cap, add 1 life
+        if(_lives <= 2)
+        {
+            _lives++;
+        }
+        //if health is being raised from 1 to 2, deactivate exploded effect on right thruster
+        if (_lives == 2)
+        {
+            _rightEngineDamaged.SetActive(false);
+        }
+        // if health is being raise from 2 to 3, deactivate exploded effect on right thruster
+        else if (_lives == 3)
+        {
+            _leftEngineDamaged.SetActive(false);
+        }
+        _uiManager.UpdateLives(_lives);
+    }
+    
     void Update()
     {
         CalculateMovement();
@@ -94,10 +121,15 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
-        
+        if (Input.GetKeyDown(KeyCode.O) && Time.time > _canFire && specialCount > 0)
+        {
+            FireEnergyBall();
+            specialCount--;
+            _uiManager.updateSpecialCount(specialCount);
+            _uiManager.slider.maxValue--;
+        }
     }
-
-
+   
     public void CalculateMovement()
     {
         // set controls for up, down, left, right. back and forth locked on zero.
@@ -130,23 +162,36 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        if (_isTripleShotActive == true)
+        if (_isTripleShotActive == true && _uiManager.ammoCount > 0)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            _audioSource.clip = _laserSoundClip;
+            _audioSource.Play();
+            _uiManager.ammoCount--;
+            _uiManager.UpdateAmmo(_uiManager.ammoCount);
         }
-        else
+        else if (_isTripleShotActive == false && _uiManager.ammoCount > 0)
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.05f, 0), Quaternion.identity);
+            _audioSource.clip = _laserSoundClip;
+            _audioSource.Play();
+            _uiManager.ammoCount--;
+            _uiManager.UpdateAmmo(_uiManager.ammoCount);
         }
 
-        _audioSource.Play();
-
-
-        //instantiate 3 lasers (triple shot prefab)
-
-
+        else if (_isTripleShotActive == false && _uiManager.ammoCount < 1)
+        {
+            _uiManager.UpdateAmmo(_uiManager.ammoCount);
+            _audioSource.clip = _laserEmptyClip;
+            _audioSource.Play();
+        }
     }
 
+    public void FireEnergyBall()
+    {     
+        Instantiate(_energyBallPrefab, transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
+    }
+    
     public void Damage()
     {
         if (_numOfShields > 0)
@@ -157,8 +202,7 @@ public class Player : MonoBehaviour
             {
                 _shieldsImg.SetActive(false);
                 _shieldVisualizer.SetActive(false);
-            }
-                     
+            }                    
         }
         else
         {
@@ -229,6 +273,7 @@ public class Player : MonoBehaviour
         _shieldsImg.SetActive(true);
         _uiManager.UpdateShield(3);
     }
+
 
     IEnumerator ShieldPowerDownRoutine()
     {

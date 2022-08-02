@@ -7,7 +7,13 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
+    private Text _specialText;
+
+    [SerializeField]
     private Text _scoreText;
+
+    [SerializeField]
+    private Text _ammoText;
     
     [SerializeField]
     private Image _LivesImg;
@@ -33,22 +39,81 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button _playAgainButton;
 
+    [SerializeField]
+    private Player playerScript;
+
+    public Slider slider;
+
     private GameObject _allObjects;
+
+    public int ammoCount = 20;
+
 
     void Start()
     {
         _allObjects = GameObject.Find("Spawn_Manager");
+        slider = GameObject.Find("ThrusterSlider").GetComponent<Slider>();
+
         _scoreText.text = "" + 0;
-    
+        _ammoText.text = "AMMO: " + 20;
+        _specialText.text = "SPECIAL: " + 0;
+
         if (_gameManager == null)
         {
             Debug.Log("Game Manager is null.");
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            slider.value--;
+        }
+    }
+
+    public void AddAmmo()
+    {
+        ammoCount += 10;
+        UpdateAmmo(ammoCount);
+        Debug.Log("Ammo Added");
+    }
+
+    public void updateSpecialCount(int specialCount)
+    {
+        _specialText.text = "SPECIAL: " + specialCount;
+        if (specialCount == 0)
+        {
+            _specialText.color = Color.red;
+        }
+        else if (specialCount > 0)
+        {
+            _specialText.color = Color.green;
+        }
+    }
+
+    public void UpdateAmmo(int ammoCount)
+    {
+        _ammoText.text = "AMMO: " + ammoCount;
+        
+        if(ammoCount == 0)
+        {
+            _ammoText.color = Color.red;
+        }
+        if (ammoCount <= 10 && ammoCount > 0)
+        {
+            _ammoText.color = Color.yellow;
+        }
+        else if (ammoCount > 10)
+        {
+            _ammoText.color = Color.green;
+        }
+        Debug.Log(ammoCount);
+    }
+
     public void UpdateScore(int playerScore)
     {     
-        _scoreText.text = "" + playerScore;
+        _scoreText.text = " " + playerScore;
     }
 
     public void UpdateLives(int currentLives)

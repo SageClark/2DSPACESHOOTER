@@ -16,30 +16,24 @@ public class SpawnManager : MonoBehaviour
     private bool _stopSpawning = false;
     private Asteroid _asteroid;
     
-
-    // Start is called before the first frame update
     void Start()
     {
 
         
     }
-
+    
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnSpecialRoutine());
     }
 
-    // Update is called once per frame
     void Update()
     {
         
         
     }
-
-    //spawn a game object every 5 seconds
-    //create a coroutine of type IEnumerator -- Yield Events
-    //while loop - infinite game loop!
 
     IEnumerator SpawnEnemyRoutine()
     {
@@ -50,9 +44,8 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(2f);
-        }
-        
-    }
+        }       
+    }   
     
     IEnumerator SpawnPowerupRoutine()
     {
@@ -60,18 +53,28 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerup = Random.Range(0, 3);
+            int randomPowerup = Random.Range(0, 5);
             Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(5.0f);
         }
-
     }
 
+    IEnumerator SpawnSpecialRoutine()
+    {
+        while (_stopSpawning == false)
+        {
+            yield return new WaitForSeconds(1f);
+            int canSpecialSpawn = Random.Range(0, 6);
+            if (canSpecialSpawn >= 3)
+            {
+                Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                Instantiate(powerups[5], posToSpawn, Quaternion.identity);
+                yield return new WaitForSeconds(5.0f);
+            }           
+        }
+    }
     public void OnPlayerDeath()
     {
-        _stopSpawning = true;
-        
+        _stopSpawning = true;      
     }
-
-
 }
