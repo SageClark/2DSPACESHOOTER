@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
     private GameObject _playerController;
     [SerializeField]
     private GameObject _energyBallPrefab;
+    [SerializeField]
+    private Image _bar;
 
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
@@ -139,7 +141,7 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         // add speed boost when left shift key is held
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && _bar.fillAmount > 0.1f)
         {
             transform.Translate(direction * _shiftSpeed * Time.deltaTime);
         }
@@ -194,6 +196,8 @@ public class Player : MonoBehaviour
     
     public void Damage()
     {
+        CameraShake.Shake(0.10f, 0.5f);
+
         if (_numOfShields > 0)
         {
             _numOfShields--;

@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnSpecialRoutine());
+        StartCoroutine(SpawnAmmoRoutine());
     }
 
     void Update()
@@ -38,7 +39,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3.0f);
-        while(_stopSpawning == false )
+        while(_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
@@ -53,17 +54,29 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerup = Random.Range(0, 5);
+            int randomPowerup = Random.Range(0, 4);
             Instantiate(powerups[randomPowerup], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(5.0f);
         }
     }
 
+    IEnumerator SpawnAmmoRoutine()
+    {
+        yield return new WaitForSeconds(25f);
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            Instantiate(powerups[4], posToSpawn, Quaternion.identity);
+            yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+
     IEnumerator SpawnSpecialRoutine()
     {
         while (_stopSpawning == false)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(45f);
             int canSpecialSpawn = Random.Range(0, 6);
             if (canSpecialSpawn >= 3)
             {

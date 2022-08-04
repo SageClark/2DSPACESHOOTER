@@ -53,10 +53,10 @@ public class Powerup : MonoBehaviour
                         player.ShieldActive();
                         break;
                     case 3:
-                        uiManager.AddAmmo();
+                        player.AddHealth();
                         break;
                     case 4:
-                        player.AddHealth();
+                        uiManager.AddAmmo();
                         break;
                     case 5:
                         player.specialCount++;

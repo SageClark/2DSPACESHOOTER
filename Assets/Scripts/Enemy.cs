@@ -126,6 +126,7 @@ public class Enemy : MonoBehaviour
             _enemyDestroyed = true;
             Destroy(this._rigidBody);
             Destroy(other.gameObject);
+            
             if(_player != null)
             {
                 _player.AddPoints(10);
