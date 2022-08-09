@@ -51,6 +51,7 @@ MonoBehaviour:
   _enemySpeed: 4
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _laserPrefab: {fileID: 9183119778584177018, guid: e29962d919f747d41b8b28610ad62407, type: 3}
+  _enemyPrefab: {fileID: 779504629919362534}
 --- !u!212 &4123798311389259169
 SpriteRenderer:
   m_ObjectHideFlags: 0

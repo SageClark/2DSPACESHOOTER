@@ -12,13 +12,16 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] powerups;
     [SerializeField]
     private GameObject _speedPrefab;
+    private Enemy _enemy;
+
+    public int enemiesDestroyed = 0;
 
     private bool _stopSpawning = false;
     private Asteroid _asteroid;
     
     void Start()
     {
-
+        _enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
         
     }
     
@@ -33,21 +36,35 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         
-        
     }
 
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(3.0f);
-        while(_stopSpawning == false)
+        while (_stopSpawning == false && enemiesDestroyed < 20)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(2f);
-        }       
+        }
+        if (enemiesDestroyed >= 20)
+        {
+            StartCoroutine(SpawnEnemyRoutineWave2());
+        }
     }   
     
+    public IEnumerator SpawnEnemyRoutineWave2()
+    {
+        while (_stopSpawning == false && enemiesDestroyed >= 20 && enemiesDestroyed < 40)
+        {
+            _enemy._fireRate = 5;
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(3.0f);

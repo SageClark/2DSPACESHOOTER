@@ -74,7 +74,11 @@ public class UIManager : MonoBehaviour
 
     public void AddAmmo()
     {
-        ammoCount += 10;
+        ammoCount += 25;
+        if (ammoCount > 50)
+        {
+            ammoCount = 50;
+        }
         UpdateAmmo(ammoCount);
         Debug.Log("Ammo Added");
     }
@@ -94,7 +98,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int ammoCount)
     {
-        _ammoText.text = "AMMO: " + ammoCount;
+        _ammoText.text = "AMMO: " + ammoCount + " / 50";
         
         if(ammoCount == 0)
         {

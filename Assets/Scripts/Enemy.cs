@@ -9,9 +9,12 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _enemySpeed = 2.5f;
     
+    private float _frequency = 4.0f;
+    private float _amplitude = 1.0f;
+    private float _cycleSpeed = 4.0f;
+    
     private Rigidbody2D _rigidBody;
 
-   
     private Player _player;
 
     private Animator _animator;
@@ -19,7 +22,7 @@ public class Enemy : MonoBehaviour
     private AudioSource _audioSource;
 
     private float _canFire = -1;
-    private float _fireRate = 3;
+    public float _fireRate = 3;
 
     [SerializeField]
     private AudioClip _laserSoundClip;
@@ -29,6 +32,12 @@ public class Enemy : MonoBehaviour
 
     private GameObject[] enemyArray;
     private GameObject _enemyContainer;
+    [SerializeField]
+    private GameObject _enemyPrefab;
+    private SpawnManager _spawnManager;
+
+    private Vector3 _pos;
+    private Vector3 _axis;
 
     private bool _enemyDestroyed = false;
 
@@ -38,6 +47,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         
         if (_player == null)       
         {
@@ -66,14 +76,16 @@ public class Enemy : MonoBehaviour
             Debug.Log("Enemy AudioSource is NULL");
         }
 
+        _pos = transform.position;
+        _axis = transform.right;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        CalculateMovement();
-
+        //CalculateMovement();
+        ZigZag();
         if (Time.time > _canFire && _enemyDestroyed == false)
         {
             _fireRate = Random.Range(3f, 7f);
@@ -90,12 +102,6 @@ public class Enemy : MonoBehaviour
     void CalculateMovement()
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
-        if (transform.position.y < -5.4)
-        {
-            float _randomXPosition = Random.Range(-9.4f, 9.4f);
-            transform.position = new Vector3(_randomXPosition, 7.4f, 0);
-           
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -115,9 +121,10 @@ public class Enemy : MonoBehaviour
 
             Destroy(this._rigidBody);
             _animator.SetTrigger("OnEnemyDeath");
-            _enemySpeed = 0;
+            _amplitude = 0;
             _audioSource.Play();
             Destroy(this.gameObject, 2.8f);
+            _spawnManager.enemiesDestroyed++;
             
         }
 
@@ -132,10 +139,11 @@ public class Enemy : MonoBehaviour
                 _player.AddPoints(10);
             }
             _animator.SetTrigger("OnEnemyDeath");
-            _enemySpeed = 0;
+            _amplitude = 0;
             Destroy(this.gameObject, 2.8f);
             _audioSource.Play();
             Destroy(GetComponent<Collider2D>());
+            _spawnManager.enemiesDestroyed++;
         }
 
         if (other.tag == "Energy")
@@ -146,7 +154,18 @@ public class Enemy : MonoBehaviour
             _animator.SetTrigger("OnEnemyDeath"); 
             _audioSource.Play();
             Destroy(this.gameObject);
+            _spawnManager.enemiesDestroyed++;
         }
     }
 
+    private void ZigZag()
+    {
+        _pos += Vector3.down * Time.deltaTime * _cycleSpeed;
+        transform.position = _pos + _axis * Mathf.Sin(Time.time * _frequency) * _amplitude;
+        
+        if (transform.position.y < -7)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
