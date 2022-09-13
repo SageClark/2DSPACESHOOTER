@@ -7,22 +7,29 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private float _rotationSpeed = 3.0f;
     [SerializeField]
-    public GameObject _explosionPrefab;
+    private GameObject _explosionPrefab;
+    
     private SpawnManager _spawnManager;
     private Scroller _scroller;
-
 
     void Start()
     {
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-        _scroller     = GameObject.Find("Plane").GetComponent<Scroller>();    
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Spawn Manager is null");
+        }
+        
+        _scroller = GameObject.Find("Plane").GetComponent<Scroller>();
+        if (_scroller == null)
+        {
+            Debug.LogError("Scroller is null (enemy)");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime);
-        
+        transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime);      
     }
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -31,6 +38,7 @@ public class Asteroid : MonoBehaviour
         {          
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject, 0.5f);
+            _spawnManager.SetWaveToFirst();
             _spawnManager.StartSpawning();
             Destroy(other.gameObject, 0.5f);
             _scroller.enabled = true;

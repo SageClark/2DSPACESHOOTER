@@ -12,16 +12,26 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _clip;
     private UIManager uiManager;
+    private GameObject _player;
 
     private void Start()
     {
         uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        if (uiManager == null)
+        {
+            Debug.Log("UI Manager is NULL");
+        }
+        
+        _player = GameObject.Find("Player");
+        if (_player == null)
+        {
+            Debug.Log("Player is NULL");
+        }
     }
 
     // Update is called once per frame    
     void Update()
     {
-
         //move down at a speed of 3
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
         //when we leave the screen, destroy me (this object)
@@ -30,10 +40,21 @@ public class Powerup : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (Input.GetKey(KeyCode.C))
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _speed * 2 * Time.deltaTime);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {
+    {      
+        if (other.tag == "EnemyLaser" && this.tag != "PowerDown")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+        
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();           
@@ -59,11 +80,15 @@ public class Powerup : MonoBehaviour
                         uiManager.AddAmmo();
                         break;
                     case 5:
-                        player.specialCount++;
-                        uiManager.updateSpecialCount(player.specialCount);
+                        player.AddToSpecialCount();
+                        uiManager.updateSpecialCount(player.GetSpecialCount());
+                        break;
+                    case 6:
+                        player.ElectrifiedActive();
                         break;
                 }
             }
+            
             else
             {
                 Debug.Log("UIManager is null");
@@ -71,7 +96,4 @@ public class Powerup : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    //only be collectable by the player (use tags)
-    //on collected, destroy
 }

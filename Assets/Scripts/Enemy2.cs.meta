@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 8b621d0b23667bc4993d639a7282fc12
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _laserSoundClip: {instanceID: 0}
+  - _laserPrefab: {fileID: 2036712684655286131, guid: 6767f2f0d6797464a9bc4a791663a742, type: 3}
+  - _playerLaser: {instanceID: 0}
+  - _enemyPrefab: {instanceID: 0}
+  - _spriteRenderer: {instanceID: 0}
+  - _reverseSprite: {instanceID: 0}
+  - _reverseLaserPrefab: {instanceID: 0}
+  - _forwardSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

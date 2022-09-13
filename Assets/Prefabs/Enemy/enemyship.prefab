@@ -10,10 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 294711237212548316}
   - component: {fileID: 9172340921458303437}
-  - component: {fileID: -4866227794974772367}
   - component: {fileID: 4837098185279326318}
   - component: {fileID: 6784068223209222733}
-  - component: {fileID: 1969176050}
   m_Layer: 0
   m_Name: enemyship
   m_TagString: Untagged
@@ -54,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,21 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-4866227794974772367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6657939243877258039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4600ee29cda6fd647a3a24a578692c9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemySpeed: 2
-  _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _laserPrefab: {fileID: 9183119778584177018, guid: e29962d919f747d41b8b28610ad62407, type: 3}
 --- !u!50 &4837098185279326318
 Rigidbody2D:
   serializedVersion: 4
@@ -139,7 +122,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.4, y: 8.36}
+    oldSize: {x: 5.12, y: 5.12}
     newSize: {x: 8.4, y: 8.36}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -148,22 +131,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.4, y: 8.36}
   m_EdgeRadius: 0
---- !u!95 &1969176050
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6657939243877258039}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 47b88f806484463479b0863a15cecc3c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

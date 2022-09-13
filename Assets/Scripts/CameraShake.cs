@@ -6,10 +6,11 @@ public class CameraShake : MonoBehaviour
 {
     public static CameraShake instance;
 
-    private Vector3 _originalPos;
     private float _timeAtCurrentFrame;
     private float _timeAtLastFrame;
     private float _fakeDelta;
+
+    private Vector3 _originalPos;
 
     void Start()
     {
@@ -33,8 +34,6 @@ public class CameraShake : MonoBehaviour
 
     public IEnumerator cShake(float duration, float amount)
     {
-        float endTime = Time.time + duration;
-
         while (duration > 0)
         {
             transform.localPosition = _originalPos + Random.insideUnitSphere * amount;
@@ -43,7 +42,6 @@ public class CameraShake : MonoBehaviour
 
             yield return null;
         }
-
         transform.localPosition = _originalPos;
     }
 }

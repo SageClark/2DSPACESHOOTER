@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,20 +41,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Player playerScript;
 
-    public Slider slider;
-
     private GameObject _allObjects;
 
-    public int ammoCount = 20;
+    private int ammoCount = 50;
 
 
     void Start()
     {
         _allObjects = GameObject.Find("Spawn_Manager");
-        slider = GameObject.Find("ThrusterSlider").GetComponent<Slider>();
 
         _scoreText.text = "" + 0;
-        _ammoText.text = "AMMO: " + 20;
+        _ammoText.text = "AMMO: " + ammoCount;
         _specialText.text = "SPECIAL: " + 0;
 
         if (_gameManager == null)
@@ -64,23 +60,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            slider.value--;
-        }
-    }
-
     public void AddAmmo()
     {
         ammoCount += 25;
+        
         if (ammoCount > 50)
         {
             ammoCount = 50;
         }
+        
         UpdateAmmo(ammoCount);
-        Debug.Log("Ammo Added");
+    }
+
+    public void ReduceAmmoCount()
+    {
+        ammoCount--;
+    }
+
+    public int GetAmmoCount()
+    {
+        return ammoCount;
     }
 
     public void updateSpecialCount(int specialCount)
@@ -90,6 +89,7 @@ public class UIManager : MonoBehaviour
         {
             _specialText.color = Color.red;
         }
+        
         else if (specialCount > 0)
         {
             _specialText.color = Color.green;
@@ -104,15 +104,16 @@ public class UIManager : MonoBehaviour
         {
             _ammoText.color = Color.red;
         }
+        
         if (ammoCount <= 10 && ammoCount > 0)
         {
             _ammoText.color = Color.yellow;
         }
+        
         else if (ammoCount > 10)
         {
             _ammoText.color = Color.green;
         }
-        Debug.Log(ammoCount);
     }
 
     public void UpdateScore(int playerScore)
@@ -137,14 +138,11 @@ public class UIManager : MonoBehaviour
 
     void GameOverSequence()
     {
-
         Destroy(_allObjects);
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
         StartCoroutine(GameOverTextFlicker());
         _restartText.gameObject.SetActive(true);
-
-
     }
     
     IEnumerator GameOverTextFlicker()
@@ -153,6 +151,7 @@ public class UIManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
             _gameOverText.gameObject.SetActive(false);
+            
             yield return new WaitForSeconds(0.5f);
             _gameOverText.gameObject.SetActive(true);
         }

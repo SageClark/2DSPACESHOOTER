@@ -5,25 +5,19 @@ using UnityEngine.UI;
 
 public class EnergyBar : MonoBehaviour
 {    
-    private Image barImage;    
+    private Image _barImage;    
     private Energy _energy;
 
     void Start()
     {
         _energy = new Energy();
-        barImage = GetComponent<Image>();
+        _barImage = GetComponent<Image>();
     }
 
     void Update()
     {
+        _barImage.fillAmount = _energy.GetEnergyNormalized();
         _energy.Update();
-
-        barImage.fillAmount = _energy.GetEnergyNormalized();
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            _energy.TrySpendEnergy(1.2f);
-        }
     }
 
     public class Energy
@@ -32,6 +26,7 @@ public class EnergyBar : MonoBehaviour
 
         private float energyAmount;
         private float energyRegenAmount;
+        private float _timeToWaitToRegen = 1f + Time.time;
 
         public Energy()
         {
@@ -41,7 +36,27 @@ public class EnergyBar : MonoBehaviour
 
         public void Update()
         {
-            energyAmount += energyRegenAmount * Time.deltaTime;
+            if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKeyDown(KeyCode.LeftShift) && _timeToWaitToRegen < Time.time && energyAmount < ENERGY_MAX)
+            {
+                energyAmount += energyRegenAmount * Time.deltaTime;
+            }
+            
+            if(Input.GetKeyUp(KeyCode.LeftShift) && _timeToWaitToRegen < Time.time && energyAmount < ENERGY_MAX)
+            {
+                energyAmount += energyRegenAmount * Time.deltaTime;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                TrySpendEnergy(0.6f);
+                _timeToWaitToRegen = 1f + Time.time;
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                TrySpendEnergy(0.6f);
+                _timeToWaitToRegen = 1f + Time.time;
+            }
         }
 
         public void TrySpendEnergy(float amount)
@@ -51,7 +66,7 @@ public class EnergyBar : MonoBehaviour
                 energyAmount -= amount;
             }
         }
-
+        
         public float GetEnergyNormalized()
         {
             return energyAmount / ENERGY_MAX;

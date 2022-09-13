@@ -11,6 +11,10 @@ TagManager:
   - EnemyLaser
   - Missile
   - Energy
+  - Constant
+  - Boss
+  - PowerDown
+  - Home
   layers:
   - Default
   - TransparentFX
@@ -19,9 +23,9 @@ TagManager:
   - Water
   - UI
   - Post Processing
-  - 
-  - 
-  - 
+  - PowerUp
+  - Player
+  - Laser
   - 
   - 
   - 
@@ -53,4 +57,13 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1412904753
+    locked: 0
+  - name: ForeForeground
+    uniqueID: 2727869053
+    locked: 0
+  - name: Powerups
+    uniqueID: 2859312063
+    locked: 0
+  - name: Player
+    uniqueID: 452731719
     locked: 0
